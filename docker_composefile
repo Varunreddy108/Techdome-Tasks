@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  frontend:
+    restart: always
+    image: varunreddy108/frontend:1.2                 # Path to the frontend directory containing the Dockerfile
+    ports:
+      - "3000:3000"                                   # Expose the frontend on port 3000
+    environment:
+      - REACT_APP_API_URL=http://backend:5000         # URL for frontend to access backend
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+  backend:
+    image: varunreddy108/backend:1.1
+    ports:
+      - "${PORT}:${PORT}"                             # Map the backend port as specified in .env
+    env_file:
+      - .env                                          # Load environment variables from .env
+    depends_on:
+      - mongo    
+    networks:
+      - app-network
+
+  mongo:
+    image: mongo:latest                                # Use the official MongoDB image
+    ports:
+      - "27017:27017"                                  # Expose MongoDB on port 27017
+    volumes:
+      - mongo-data:/data/db                            # Persistent storage for MongoDB
+    networks:
+      - app-network        
+
+networks:
+  app-network:
+    driver: bridge      # Custom network for inter-service communication
+
+volumes:
+  mongo-data:
+    driver: local
