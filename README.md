@@ -93,9 +93,13 @@ Step 2: Translate Docker Compose Services to Kubernetes Resources
 Kubernetes Resource Types
 For each service in Docker Compose, we'll create the following Kubernetes resources:
 •	Deployment for frontend and backend applications.
+
 •	StatefulSet for MongoDB (for persistent storage).
+
 •	Service to expose each component within the cluster.
+
 •	ConfigMap and Secret to manage environment variables and sensitive data.
+
 •	PersistentVolumeClaim (PVC) for MongoDB data storage.
 
 Step 5: Access the Application
